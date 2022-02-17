@@ -1,6 +1,7 @@
 import {React} from "react";
-import Header from '../../components/header/Header';
-import Banner from '../../components/banner/Banner'
+import Header from '../components/header/Header';
+import Banner from '../components/banner/Banner';
+import Features from '../components/features/Features';
 
 function Home() {
   return (
@@ -8,6 +9,7 @@ function Home() {
       <Header />
       <main>
         <Banner />
+        <Features />
       </main>
     </div>
   );
