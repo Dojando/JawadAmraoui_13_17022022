@@ -7,7 +7,7 @@ import Footer from '../components/footer/Footer';
 function Home() {
   return (
     <div className="container">
-      <Header />
+      <Header connected={false}/>
       <main>
         <Banner />
         <Features />

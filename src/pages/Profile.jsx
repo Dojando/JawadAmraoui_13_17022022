@@ -3,10 +3,10 @@ import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import Form from '../components/form/Form';
 
-function Login() {
+function Profile() {
   return (
     <div className="container">
-      <Header connected={false}/>
+      <Header connected={true}/>
       <main className="main bg-dark">
         <Form />
       </main>
@@ -15,4 +15,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Profile;
