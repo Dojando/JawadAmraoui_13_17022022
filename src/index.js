@@ -5,6 +5,7 @@ import { Route } from "react-router";
 import './style.css';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
+import Profile from './pages/Profile.jsx';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,6 +13,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
     </Router>
   </React.StrictMode>,
