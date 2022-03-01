@@ -4,7 +4,6 @@ import './header.css';
 import argentBanqueLogo from "../../images/argentBankLogo.png"
 
 function Header(props) {
-  console.log(props.connected)
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to="/" >
