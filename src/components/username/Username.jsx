@@ -3,7 +3,7 @@ import './username.css';
 
 function Username() {
 
-  const [editName, setEditName] = useState(true);
+  const [editName, setEditName] = useState(false);
 
   const editButton = (e) => {
     e.preventDefault();
@@ -26,11 +26,11 @@ function Username() {
           <h1>Welcome back</h1>
           <form className="edit-container">
             <div className="edit-container-left">
-              <input type="text" placeholder="Tony" />
+              <input className="username-input" type="text" placeholder="Tony" />
               <button className="edit-button save-button">Save</button>
             </div>
             <div className="edit-container-right">
-              <input type="text" placeholder="Jarvis" />
+              <input className="username-input" type="text" placeholder="Jarvis" />
               <button onClick={cancelButton} className="edit-button cancel-button">Cancel</button>
             </div>
           </form>

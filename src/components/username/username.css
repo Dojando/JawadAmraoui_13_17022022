@@ -15,7 +15,7 @@
   margin-bottom: 2rem;
 }
 
-input {
+.username-input {
   padding: 5px;
   font-size: 1.2rem;
   max-width: 170px;
@@ -23,7 +23,7 @@ input {
   margin-bottom: 10px;
 }
 
-input::placeholder {
+.username-input::placeholder {
   opacity: 50%;
 }
 
