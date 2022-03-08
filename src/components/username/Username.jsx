@@ -4,8 +4,18 @@ import './username.css';
 function Username() {
 
   const [editName, setEditName] = useState(false);
+  const [editFirstName, setEditFirstName] = useState("");
+  const [editLastName, setEditLastName] = useState("");
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
+
+  const handleFirstNameChange = (e) => {
+    setEditFirstName(e.target.value);
+  }
+
+  const handleLastNameChange = (e) => {
+    setEditLastName(e.target.value);
+  }
 
   const editButton = (e) => {
     e.preventDefault();
@@ -15,9 +25,34 @@ function Username() {
   const cancelButton = (e) => {
     e.preventDefault();
     setEditName(false);
+    setEditFirstName("");
+    setEditLastName("");
   };
 
-  useEffect(() => {
+  const saveButton = (e) => {
+    e.preventDefault();
+    fetch(`http://localhost:3001/api/v1/user/profile`,{
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjBjZGZkNDFmMmE0MTg4NDdkMDEyMCIsImlhdCI6MTY0NjY3MjEzNywiZXhwIjoxNjQ2NzU4NTM3fQ.SbufVkHkX5YG0frtnhzOEJ-DGv8rDnJ7FVKcW56is6k' 
+      },
+      method: "PUT",
+      body: JSON.stringify({firstName: editFirstName, lastName: editLastName})
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response)
+      if (response.status === 200) {
+        setEditName(false);
+        setEditFirstName("");
+        setEditLastName("");
+        getProfileData();
+      }
+    })
+  };
+
+  const getProfileData = (e) => {
     fetch(`http://localhost:3001/api/v1/user/profile`,{
       headers: {
         'Accept': 'application/json',
@@ -37,6 +72,10 @@ function Username() {
         setLastName(response.body.lastName)
       }
     })
+  };
+
+  useEffect(() => {
+    getProfileData();
   }, [])
 
   return (
@@ -50,11 +89,11 @@ function Username() {
           <h1>Welcome back</h1>
           <form className="edit-container">
             <div className="edit-container-left">
-              <input className="username-input" type="text" placeholder="Tony" />
-              <button className="edit-button save-button">Save</button>
+              <input className="username-input" type="text" placeholder={firstName} value={editFirstName} onChange={handleFirstNameChange} />
+              <button onClick={saveButton} className="edit-button save-button">Save</button>
             </div>
             <div className="edit-container-right">
-              <input className="username-input" type="text" placeholder="Jarvis" />
+              <input className="username-input" type="text" placeholder={lastName} value={editLastName} onChange={handleLastNameChange} />
               <button onClick={cancelButton} className="edit-button cancel-button">Cancel</button>
             </div>
           </form>
