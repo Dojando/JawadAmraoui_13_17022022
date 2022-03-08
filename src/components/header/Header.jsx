@@ -4,6 +4,12 @@ import './header.css';
 import argentBanqueLogo from "../../images/argentBankLogo.png"
 
 function Header(props) {
+
+  const logoutButton = () => {
+    localStorage.removeItem('bankToken');
+    window.location.href = "./";
+  }; 
+
   return (
     <nav className="main-nav">
       <Link className="main-nav-logo" to="/" >
@@ -24,8 +30,8 @@ function Header(props) {
         <div>
           <Link className="main-nav-item" to="/profile">
             <i className="fa fa-user-circle"></i> Tony </Link>
-          <Link className="main-nav-item" to="/">
-            <i className="fa fa-sign-out"></i> Sign Out </Link>
+          <button onClick={logoutButton} className="main-nav-item nav-button">
+            <i className="fa fa-sign-out"></i> Sign Out </button>
         </div> }
       </div>
     </nav> 
