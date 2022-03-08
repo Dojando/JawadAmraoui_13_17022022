@@ -8,6 +8,7 @@ function Username() {
   const [editLastName, setEditLastName] = useState("");
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
+  let token = localStorage.getItem("bankToken");
 
   const handleFirstNameChange = (e) => {
     setEditFirstName(e.target.value);
@@ -35,7 +36,7 @@ function Username() {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjBjZGZkNDFmMmE0MTg4NDdkMDEyMCIsImlhdCI6MTY0NjY3MjEzNywiZXhwIjoxNjQ2NzU4NTM3fQ.SbufVkHkX5YG0frtnhzOEJ-DGv8rDnJ7FVKcW56is6k' 
+        'Authorization': `Bearer ${token}`
       },
       method: "PUT",
       body: JSON.stringify({firstName: editFirstName, lastName: editLastName})
@@ -52,12 +53,12 @@ function Username() {
     })
   };
 
-  const getProfileData = (e) => {
+  const getProfileData = () => {
     fetch(`http://localhost:3001/api/v1/user/profile`,{
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjBjZGZkNDFmMmE0MTg4NDdkMDEyMCIsImlhdCI6MTY0NjY3MjEzNywiZXhwIjoxNjQ2NzU4NTM3fQ.SbufVkHkX5YG0frtnhzOEJ-DGv8rDnJ7FVKcW56is6k' 
+        'Authorization': `Bearer ${token}` 
       },
       method: "POST"
     })
