@@ -5,6 +5,7 @@ import Account from '../components/account/Account';
 import Username from '../components/username/Username';
 
 function Profile() {
+  
   return (
     <div className="container">
       <Header connected={true}/>
