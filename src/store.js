@@ -1,4 +1,7 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+
+const token = localStorage.getItem("bankToken");
 
 // state
 const initialState = {
@@ -14,15 +17,6 @@ const initialState = {
 
 // actions creators
 
-export const getProfileData = () => ({
-  type: "getProfileData",
-});
-
-export const handleButtonClicked = (e) => ({
-  type: "handleButtonClicked",
-  payload: { event: e },
-});
-
 export const handleFirstNameChange = (e) => ({
   type: "handleFirstNameChange",
   payload: { event: e },
@@ -33,8 +27,8 @@ export const handleLastNameChange = (e) => ({
   payload: { event: e },
 });
 
-export const saveButton = (e) => ({
-  type: "saveButton",
+export const saveEditedName = (e) => ({
+  type: "saveEditedName",
   payload: { event: e },
 });
 
@@ -58,9 +52,31 @@ export const getPasswordValue = (e) => ({
   payload: { event: e },
 });
 
+export const showErrorMessage = (e) => ({
+  type: "showErrorMessage",
+  payload: { message: e },
+});
+
+export const showName = (e) => ({
+  type: "showName",
+  payload: { event: e  }
+});
+
 // reducer
 
 function reducer(state = initialState, action) {
+  if (action.type === "saveEditedName") {
+    console.log(action.payload)
+    return { ...state, editName: action.payload.editName, editFirstName: action.payload.editFirstName, editLastName: action.payload.editLastName }
+  }
+  if (action.type === "showName") {
+    console.log(action.payload)
+    return { ...state, firstName: action.payload.firstName, lastName: action.payload.lastName }
+  }
+  if (action.type === "showErrorMessage") {
+    console.log(action.payload)
+    return { ...state, errorMessage: action.payload.message }
+  }
   if (action.type === "editButton") {
     console.log(action.payload)
     action.payload.event.preventDefault();
@@ -86,73 +102,75 @@ function reducer(state = initialState, action) {
   if (action.type === "getPasswordValue") {
     return { ...state, passwordInput: action.payload.event.target.value }
   }
-  if (action.type === "getProfileData") {
-    const token = localStorage.getItem("bankToken");
-    fetch(`http://localhost:3001/api/v1/user/profile`,{
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
-      },
-      method: "POST"
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response)
-      if (response.status !== 200) {
-        window.location.href = "./login";
-      }
-      if (response.status === 200) {
-        return { ...state, firstName: response.body.firstName, lastName: response.body.lastName}
-      }
-    })
-  }
-  if (action.type === "saveButton") {
-    console.log(action.payload)
-    action.payload.event.preventDefault();
-    const token = localStorage.getItem("bankToken");
-    fetch(`http://localhost:3001/api/v1/user/profile`,{
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      method: "PUT",
-      body: JSON.stringify({firstName: state.editFirstName, lastName: state.editLastName})
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response)
-      if (response.status === 200) {
-        return { ...state, editName: false, editFirstName: "", editLastName: "", }
-        // getProfileData();
-      }
-    })
-    
-  }
-  if (action.type === "handleButtonClicked") {
-    action.payload.event.preventDefault();
-    fetch(`http://localhost:3001/api/v1/user/login`,{
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: "POST",
-      body: JSON.stringify({email: state.emailInput, password: state.passwordInput})
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response)
-      if (response.status === 400) {
-        return { ...state, errorMessage: response.message };
-      }
-      if (response.status === 200) {
-        localStorage.setItem("bankToken", response.body.token)
-        window.location.href = "./profile";
-      }
-    })
-  }
   return state
 }
 
-export const store = createStore(reducer);
+// Thunk function
+
+export function login(dispatch, getState) {
+  console.log(getState().emailInput)
+  console.log(initialState.emailInput)
+  fetch(`http://localhost:3001/api/v1/user/login`,{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: "POST",
+    body: JSON.stringify({email: getState().emailInput, password: getState().passwordInput})
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response)
+    if (response.status === 400) {
+      dispatch({ type: 'showErrorMessage', payload: { message: response.message }})
+    }
+    if (response.status === 200) {
+      localStorage.setItem("bankToken", response.body.token)
+      window.location.href = "./profile";
+    }
+  })
+}
+
+export function getProfileData(dispatch, getState) {
+  fetch(`http://localhost:3001/api/v1/user/profile`,{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` 
+    },
+    method: "POST"
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response)
+    if (response.status !== 200) {
+      window.location.href = "./login";
+    }
+    if (response.status === 200) {
+      dispatch({ type: 'showName', payload: { firstName: response.body.firstName, lastName: response.body.lastName }})
+    };
+  })
+}
+
+export function saveButton(dispatch, getState) {
+  fetch(`http://localhost:3001/api/v1/user/profile`,{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    method: "PUT",
+    body: JSON.stringify({firstName: getState().editFirstName, lastName: getState().editLastName})
+  })
+  .then((response) => response.json())
+  .then((response) => {
+    console.log(response)
+    if (response.status === 200) {
+      dispatch({ type: 'saveEditedName', payload: { editName: false, editFirstName: "", editLastName: "" }})
+      dispatch(getProfileData);
+    }
+  })
+}
+
+
+export const store = createStore(reducer, applyMiddleware(thunkMiddleware));

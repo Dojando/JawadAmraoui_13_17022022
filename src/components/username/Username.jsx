@@ -86,7 +86,8 @@ function Username() {
   // };
 
   useEffect(() => {
-    dispatch(getProfileData())
+    console.log("test")
+    dispatch(getProfileData)
     // getProfileData();
   }, [])
 
@@ -102,7 +103,7 @@ function Username() {
           <form className="edit-container">
             <div className="edit-container-left">
               <input className="username-input" type="text" placeholder={firstName} value={editFirstName} onChange={(e) => {dispatch(handleFirstNameChange(e))}} />
-              <button onClick={(e) => {dispatch(saveButton(e))}} className="edit-button save-button">Save</button>
+              <button onClick={(e) => {e.preventDefault();dispatch(saveButton)}} className="edit-button save-button">Save</button>
             </div>
             <div className="edit-container-right">
               <input className="username-input" type="text" placeholder={lastName} value={editLastName} onChange={(e) => {dispatch(handleLastNameChange(e))}} />
