@@ -66,37 +66,29 @@ export const showName = (e) => ({
 
 function reducer(state = initialState, action) {
   if (action.type === "saveEditedName") {
-    console.log(action.payload)
     return { ...state, editName: action.payload.editName, editFirstName: action.payload.editFirstName, editLastName: action.payload.editLastName }
   }
   if (action.type === "showName") {
-    console.log(action.payload)
     return { ...state, firstName: action.payload.firstName, lastName: action.payload.lastName }
   }
   if (action.type === "showErrorMessage") {
-    console.log(action.payload)
     return { ...state, errorMessage: action.payload.message }
   }
   if (action.type === "editButton") {
-    console.log(action.payload)
     action.payload.event.preventDefault();
     return { ...state, editName: true }
   }
   if (action.type === "cancelButton") {
-    console.log(action.payload)
     action.payload.event.preventDefault();
     return { ...state, editName: false, editFirstName: "", editLastName: "" }
   }
   if (action.type === "handleFirstNameChange") {
-    console.log(action.payload)
     return { ...state, editFirstName: action.payload.event.target.value }
   }
   if (action.type === "handleLastNameChange") {
-    console.log(action.payload)
     return { ...state, editLastName: action.payload.event.target.value }
   }
   if (action.type === "getEmailValue") {
-    console.log(action.payload)
     return { ...state, emailInput: action.payload.event.target.value }
   }
   if (action.type === "getPasswordValue") {
@@ -108,8 +100,6 @@ function reducer(state = initialState, action) {
 // Thunk function
 
 export function login(dispatch, getState) {
-  console.log(getState().emailInput)
-  console.log(initialState.emailInput)
   fetch(`http://localhost:3001/api/v1/user/login`,{
     headers: {
       'Accept': 'application/json',
@@ -120,7 +110,6 @@ export function login(dispatch, getState) {
   })
   .then((response) => response.json())
   .then((response) => {
-    console.log(response)
     if (response.status === 400) {
       dispatch({ type: 'showErrorMessage', payload: { message: response.message }})
     }
@@ -142,7 +131,6 @@ export function getProfileData(dispatch, getState) {
   })
   .then((response) => response.json())
   .then((response) => {
-    console.log(response)
     if (response.status !== 200) {
       window.location.href = "./login";
     }
@@ -164,7 +152,6 @@ export function saveButton(dispatch, getState) {
   })
   .then((response) => response.json())
   .then((response) => {
-    console.log(response)
     if (response.status === 200) {
       dispatch({ type: 'saveEditedName', payload: { editName: false, editFirstName: "", editLastName: "" }})
       dispatch(getProfileData);

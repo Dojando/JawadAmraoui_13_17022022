@@ -8,87 +8,13 @@ function Username() {
   const dispatch = useDispatch();
 
   const editName = useSelector((state) => state.editName);
-  // const [editName, setEditName] = useState(false);
   const editFirstName = useSelector((state) => state.editFirstName);
-  // const [editFirstName, setEditFirstName] = useState("");
   const editLastName = useSelector((state) => state.editLastName);
-  // const [editLastName, setEditLastName] = useState("");
   const firstName = useSelector((state) => state.firstName);
-  // const [firstName, setFirstName] = useState(null);
   const lastName = useSelector((state) => state.lastName);
-  // const [lastName, setLastName] = useState(null);
-  
-  // let token = localStorage.getItem("bankToken");
-
-  // const handleFirstNameChange = (e) => {
-  //   setEditFirstName(e.target.value);
-  // }
-
-  // const handleLastNameChange = (e) => {
-  //   setEditLastName(e.target.value);
-  // }
-
-  // const editButton = (e) => {
-  //   e.preventDefault();
-  //   setEditName(true);
-  // };
-
-  // const cancelButton = (e) => {
-  //   e.preventDefault();
-  //   setEditName(false);
-  //   setEditFirstName("");
-  //   setEditLastName("");
-  // };
-
-  // const saveButton = (e) => {
-  //   e.preventDefault();
-  //   fetch(`http://localhost:3001/api/v1/user/profile`,{
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}`
-  //     },
-  //     method: "PUT",
-  //     body: JSON.stringify({firstName: editFirstName, lastName: editLastName})
-  //   })
-  //   .then((response) => response.json())
-  //   .then((response) => {
-  //     console.log(response)
-  //     if (response.status === 200) {
-  //       setEditName(false);
-  //       setEditFirstName("");
-  //       setEditLastName("");
-  //       getProfileData();
-  //     }
-  //   })
-  // };
-
-  // const getProfileData = () => {
-  //   fetch(`http://localhost:3001/api/v1/user/profile`,{
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}` 
-  //     },
-  //     method: "POST"
-  //   })
-  //   .then((response) => response.json())
-  //   .then((response) => {
-  //     console.log(response)
-  //     if (response.status !== 200) {
-  //       window.location.href = "./login";
-  //     }
-  //     if (response.status === 200) {
-  //       setFirstName(response.body.firstName)
-  //       setLastName(response.body.lastName)
-  //     }
-  //   })
-  // };
 
   useEffect(() => {
-    console.log("test")
     dispatch(getProfileData)
-    // getProfileData();
   }, [])
 
   return (

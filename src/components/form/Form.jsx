@@ -1,4 +1,4 @@
-import {React, useEffect} from "react";
+import {React} from "react";
 import './form.css';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -9,23 +9,9 @@ import { login } from "../../store"
 function Form() {
   const dispatch = useDispatch();
 
-  const errorMessage = useSelector((state) => 
-    // console.log(state)
-    state.errorMessage
-    );
-  
-  
-  const emailInput = useSelector((state) => state.emailInput);
-  const passwordInput = useSelector((state) => state.passwordInput);
-
-  console.log(errorMessage)
-
-  useEffect(() => {
-    console.log(errorMessage)
-  }, [emailInput]);
+  const errorMessage = useSelector((state) => state.errorMessage);
 
   return (
-    
     <section className="sign-in-content">
     <i className="fa fa-user-circle sign-in-icon"></i>
     <h1>Sign In</h1>
