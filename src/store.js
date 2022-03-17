@@ -141,22 +141,24 @@ export function getProfileData(dispatch, getState) {
 }
 
 export function saveButton(dispatch, getState) {
-  fetch(`http://localhost:3001/api/v1/user/profile`,{
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    method: "PUT",
-    body: JSON.stringify({firstName: getState().editFirstName, lastName: getState().editLastName})
-  })
-  .then((response) => response.json())
-  .then((response) => {
-    if (response.status === 200) {
-      dispatch({ type: 'saveEditedName', payload: { editName: false, editFirstName: "", editLastName: "" }})
-      dispatch(getProfileData);
-    }
-  })
+  if (getState().editFirstName !== "" && getState().editLastName !== "") {
+    fetch(`http://localhost:3001/api/v1/user/profile`,{
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      method: "PUT",
+      body: JSON.stringify({firstName: getState().editFirstName, lastName: getState().editLastName})
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({ type: 'saveEditedName', payload: { editName: false, editFirstName: "", editLastName: "" }})
+        dispatch(getProfileData);
+      }
+    })
+  }
 }
 
 
